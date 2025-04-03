@@ -1,3 +1,5 @@
+/* globals.css */
+
 /* === NEW STYLES START HERE === */
 
 .content-boxes-container {
@@ -5,10 +7,11 @@
   gap: 20px; /* Add space between the two boxes */
   margin-bottom: 20px; /* Add space below the boxes before the results */
   align-items: flex-start; /* Align items to the top */
+  width: 100%; /* Ensure container uses available width */
 }
 
 .question-box {
-  flex: 1; /* Allow the question box to take up available space */
+  flex: 0.8; /* Allow the question box to take up available space */
   padding: 20px; /* Add some internal padding */
   border: 1px solid #eee; /* Optional: add a light border */
   border-radius: 8px; /* Optional: rounded corners */
@@ -20,17 +23,20 @@
 }
 
 .flowchart-visual-box {
-  flex: 1; /* Allow the visual box to take up available space */
+  flex: 1.2; /* Allow the visual box to take up available space */
   padding: 20px; /* Add some internal padding */
   border: 1px solid #eee; /* Optional: add a light border */
   border-radius: 8px; /* Optional: rounded corners */
   background-color: #fff; /* Optional: background color */
-  min-height: 200px; /* Keep this or adjust as needed */
+  /* min-height: 200px; /* REMOVED - Let content determine height */
   display: flex; /* Use flex to help center placeholder text */
   flex-direction: column; /* Stack content vertically */
   align-items: center; /* Center content horizontally */
   justify-content: flex-start; /* Align SVG to top */
   text-align: center; /* Center text */
+  /* ADDED: Ensure box can expand and scroll if needed */
+  width: 100%;
+  overflow: auto;
 }
 
 
@@ -170,7 +176,8 @@ h2 {
 /* Flowchart specific styles */
 .flowchart-container {
   padding: 20px;
-  max-width: 800px; /* Adjusted max-width */
+  /* MODIFIED: Increased max-width */
+  max-width: 1200px;
   width: 100%; /* Take available width */
   margin: 80px auto 20px; /* Adjust margin */
   box-sizing: border-box;
@@ -235,9 +242,13 @@ h2 {
 /* === SVG Flowchart Styles === */
 
 .flowchart-svg {
-  width: 100%;
-  height: auto; /* Allow aspect ratio to determine height */
-  max-height: 450px; /* Or a fixed height if preferred */
+  /* MODIFIED: Removed explicit width/height, added max-width/display/margin */
+  /* width: 100%; */ /* REMOVED */
+  /* height: auto; */ /* REMOVED */
+  /* max-height: 450px; */ /* REMOVED */
+  max-width: 100%; /* ADDED: Prevent SVG exceeding container */
+  display: block; /* ADDED: Help layout consistency */
+  margin: 0 auto; /* ADDED: Center if container is wider */
   overflow: visible; /* Ensure paths aren't clipped */
 }
 
@@ -299,26 +310,24 @@ h2 {
   stroke-width: 2.5;
 }
 
-/* Style for the active path */
 .flowchart-svg .edge.active {
-  stroke: #1976d2; /* Darker active blue */
+  /* MODIFIED: Using updated color and referencing active marker */
+  stroke: #1976d2; /* Darker active blue to match marker */
   stroke-width: 3;
-  /* Make sure it points to the active marker ID */
-  marker-end: url(#arrowhead-active);
+  marker-end: url(#arrowhead-active); /* Ensure active marker is used */
 }
 
-/* Style for the active edge label */
 .flowchart-svg .edge-label.active {
   fill: #1a237e; /* Darker text for active edge label */
   font-weight: bold;
 }
 
-/* Style for the active arrowhead polygon itself */
+/* ADDED: Style for the active arrowhead polygon itself */
 #arrowhead-active polygon {
     fill: #1976d2; /* Match active edge color */
 }
 
-/* Optional: Style for the default arrowhead polygon */
+/* ADDED: Style for the default arrowhead polygon */
 #arrowhead polygon {
     fill: #999; /* Default arrowhead color */
 }
