@@ -1,3 +1,78 @@
+/* === NEW STYLES START HERE === */
+
+.content-boxes-container {
+  display: flex; /* Enable Flexbox */
+  gap: 20px; /* Add space between the two boxes */
+  margin-bottom: 20px; /* Add space below the boxes before the results */
+  align-items: flex-start; /* Align items to the top */
+}
+
+.question-box {
+  flex: 1; /* Allow the question box to take up available space */
+  padding: 20px; /* Add some internal padding */
+  border: 1px solid #eee; /* Optional: add a light border */
+  border-radius: 8px; /* Optional: rounded corners */
+  background-color: #fff; /* Optional: background color */
+  min-height: 200px; /* Optional: ensure a minimum height */
+  /* Added flex column to manage internal layout better if needed */
+  display: flex;
+  flex-direction: column;
+}
+
+.flowchart-visual-box {
+  flex: 1; /* Allow the visual box to take up available space */
+  padding: 20px; /* Add some internal padding */
+  border: 1px solid #eee; /* Optional: add a light border */
+  border-radius: 8px; /* Optional: rounded corners */
+  background-color: #fff; /* Optional: background color */
+  min-height: 200px; /* Keep this or adjust as needed */
+  display: flex; /* Use flex to help center placeholder text */
+  flex-direction: column; /* Stack content vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: flex-start; /* Align SVG to top */
+  text-align: center; /* Center text */
+}
+
+
+/* Adjust Result container styles as it's now inside question-box */
+.result-container {
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin-top: 30px; /* Add space above results inside the question box */
+  /* Remove properties that were for when it was outside */
+  /* width: 100%; */ /* No longer needed, takes width of parent */
+  /* max-width: 800px; */ /* No longer needed */
+  box-sizing: border-box;
+  background-color: #f0f0f0; /* Slightly different background */
+}
+
+/* Ensure reset button is centered below results */
+.reset-button {
+  display: block; /* Make it a block element */
+  margin: 20px auto 0; /* Center horizontally, add top margin */
+  /* Keep existing button styles */
+  text-transform: uppercase;
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #6F00FF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.reset-button:hover { /* Added hover state for reset button */
+  background-color: #5700CA !important;
+}
+
+/* === NEW STYLES END HERE === */
+
+/* --- Existing styles below (with modifications) --- */
 @font-face {
   font-family: 'General Sans';
   src: url('/fonts/GeneralSans/GeneralSans-Regular.woff2') format('woff2'),
@@ -34,7 +109,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; // Removed to allow content flow */
   align-items: center;
   background-color: #f9f9f9;
   line-height: 1.6;
@@ -95,14 +170,17 @@ h2 {
 /* Flowchart specific styles */
 .flowchart-container {
   padding: 20px;
-  max-width: 800px;
-  margin: 80px auto 0;
+  max-width: 800px; /* Adjusted max-width */
+  width: 100%; /* Take available width */
+  margin: 80px auto 20px; /* Adjust margin */
+  box-sizing: border-box;
 }
 
 .main-heading {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
+  text-align: center; /* Center heading */
 }
 
 .question-heading {
@@ -112,17 +190,17 @@ h2 {
 }
 
 /* Button Styling */
-.action-button, .reset-button {
-  display: flex;
+.action-button {
+  display: inline-flex; /* Changed from flex to inline-flex */
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  width: 100%;
-  max-width: 250px;
+  /* width: 100%; // Removed to allow button width to adjust */
+  /* max-width: 250px; // Removed */
   text-align: center;
-  margin: 20px auto;
-  padding: 12px 24px;
-  font-size: 16px;
+  margin: 10px 5px; /* Adjusted margin for inline */
+  padding: 10px 20px; /* Adjusted padding */
+  font-size: 14px; /* Adjusted font size */
   font-weight: bold;
   background-color: #6F00FF;
   color: white;
@@ -131,16 +209,12 @@ h2 {
   cursor: pointer;
 }
 
-.action-button:hover, .reset-button:hover {
+.action-button:hover { /* Added hover state for action button */
   background-color: #5700CA !important;
 }
 
-.result-container {
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  padding: 1rem;
-  margin-top: 1.25rem;
-}
+/* Styles for Result display (some might be covered by .result-container now) */
+/* .result-container defined in NEW section */
 
 .result-heading {
   font-size: 1.125rem;
@@ -157,3 +231,82 @@ h2 {
   padding-left: 1.25rem;
   margin-bottom: 1rem;
 }
+
+/* === SVG Flowchart Styles === */
+
+.flowchart-svg {
+  width: 100%;
+  height: auto; /* Allow aspect ratio to determine height */
+  max-height: 450px; /* Or a fixed height if preferred */
+  overflow: visible; /* Ensure paths aren't clipped */
+}
+
+.flowchart-svg .node rect {
+  fill: #fff;
+  stroke: #ccc;
+  stroke-width: 1.5;
+  rx: 5; /* Rounded corners */
+  ry: 5;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.flowchart-svg .node text {
+  fill: #333;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-size: 12px;
+  pointer-events: none; /* Allow clicks to pass through text */
+  font-family: 'General Sans', sans-serif;
+}
+
+.flowchart-svg .node.result rect {
+  fill: #e8f5e9; /* Light green for result nodes */
+}
+
+
+.flowchart-svg .edge {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2;
+  marker-end: url(#arrowhead); /* Add arrowheads later if desired */
+  transition: stroke 0.3s ease;
+}
+
+.flowchart-svg .edge-label {
+  fill: #555;
+  font-size: 10px;
+  text-anchor: middle;
+  font-family: 'General Sans', sans-serif;
+  transition: fill 0.3s ease;
+}
+
+
+/* --- Active State Highlighting --- */
+
+.flowchart-svg .node.active rect {
+  fill: #bbdefb; /* Light blue fill for active node */
+  stroke: #64b5f6; /* Darker blue stroke */
+  stroke-width: 2;
+}
+
+.flowchart-svg .node.active text {
+  fill: #1a237e; /* Darker text for active node */
+  font-weight: bold;
+}
+.flowchart-svg .node.result.active rect {
+  fill: #a5d6a7; /* Darker green for active result */
+  stroke: #4caf50;
+  stroke-width: 2.5;
+}
+
+.flowchart-svg .edge.active {
+  stroke: #64b5f6; /* Blue stroke for active edge */
+  stroke-width: 3;
+}
+
+.flowchart-svg .edge-label.active {
+  fill: #1a237e; /* Darker text for active edge label */
+  font-weight: bold;
+}
+
+/* === End SVG Flowchart Styles === */
