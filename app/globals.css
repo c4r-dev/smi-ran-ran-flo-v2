@@ -299,14 +299,29 @@ h2 {
   stroke-width: 2.5;
 }
 
+/* Style for the active path */
 .flowchart-svg .edge.active {
-  stroke: #64b5f6; /* Blue stroke for active edge */
+  stroke: #1976d2; /* Darker active blue */
   stroke-width: 3;
+  /* Make sure it points to the active marker ID */
+  marker-end: url(#arrowhead-active);
 }
 
+/* Style for the active edge label */
 .flowchart-svg .edge-label.active {
   fill: #1a237e; /* Darker text for active edge label */
   font-weight: bold;
 }
+
+/* Style for the active arrowhead polygon itself */
+#arrowhead-active polygon {
+    fill: #1976d2; /* Match active edge color */
+}
+
+/* Optional: Style for the default arrowhead polygon */
+#arrowhead polygon {
+    fill: #999; /* Default arrowhead color */
+}
+
 
 /* === End SVG Flowchart Styles === */
