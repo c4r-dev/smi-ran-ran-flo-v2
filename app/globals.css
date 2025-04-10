@@ -198,11 +198,12 @@
   margin-bottom: 20px; /* Add space below the boxes before the results */
   align-items: flex-start; /* Align items to the top */
   width: 100%; /* Ensure container uses available width */
+  flex-wrap: wrap; /* Allow wrapping for responsiveness, although media query below handles stacking */
 }
 
 .question-box {
   /* Using equal flex */
-  flex: 1;
+  flex: 1 1 300px; /* Allow shrinking, basis of 300px */
   padding: 20px;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -214,7 +215,7 @@
 
 .flowchart-visual-box {
   /* Using equal flex */
-  flex: 1;
+  flex: 1 1 300px; /* Allow shrinking, basis of 300px */
   padding: 20px;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -398,7 +399,7 @@ h2 {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease; /* Added transition */
+  transition: background-color 0.2s ease, opacity 0.2s ease; /* Added opacity transition */
 }
 
 .action-button:hover {
@@ -616,3 +617,137 @@ h2 {
 }
 
 /* === End of Darker Selected Disabled Options Rules === */
+
+
+/* === RESPONSIVE STYLES START HERE === */
+
+/* --- Medium Screens and Below (e.g., Tablets and Phones) --- */
+@media (max-width: 768px) {
+
+  /* Stack the main content boxes on the flowchart page */
+  .content-boxes-container {
+    flex-direction: column; /* Change from default row to column */
+    align-items: center; /* Center boxes when stacked */
+    gap: 30px; /* Adjust vertical gap */
+  }
+
+  /* Ensure boxes take full width when stacked */
+  .question-box,
+  .flowchart-visual-box {
+    width: 100%; /* Occupy full container width */
+    max-width: 600px; /* Optional: Limit max width even when stacked */
+    min-height: auto; /* Allow height to adjust to content */
+    padding: 15px; /* Slightly reduce padding */
+    /* Reset flex basis if previously set */
+    flex-basis: auto;
+  }
+
+  /* Center align content within the flowchart box's inner container */
+   .flowchart-visual-box > div[style*="flex-grow: 1"] { /* Target inner div holding questions */
+      padding-left: 0;
+      /* Align the container of the questions centrally */
+      align-items: center;
+   }
+   .flowchart-visual-box h5 {
+       text-align: center;
+       width: 100%;
+   }
+   /* Center the div containing radio options under the heading */
+   .flowchart-visual-box h5 + div[style*="gap: 5px"] {
+        justify-content: center;
+        width: 100%; /* Ensure it can center */
+   }
+
+   /* Adjust main page container and flowchart page container padding/width */
+   #flowchart-page-container, /* Use ID selector */
+   #main-page-container /* Add this if you added the ID to app/page.js */
+   {
+       max-width: 95%; /* Allow slightly more width */
+       padding-left: 10px;
+       padding-right: 10px;
+   }
+
+    /* Adjust button container using the new class */
+    .button-container {
+       gap: 10px; /* Reduce gap */
+       flex-wrap: wrap; /* Ensure wrapping */
+    }
+
+     /* Make buttons slightly smaller */
+     .action-button {
+         padding: 8px 16px;
+         font-size: 13px;
+     }
+}
+
+/* --- Small Screens (e.g., Phones) --- */
+@media (max-width: 480px) {
+   h1, .title {
+       font-size: 1.3rem; /* Adjust header font size */
+   }
+   h2 {
+       font-size: 1.1rem;
+   }
+   h4 {
+      font-size: 1rem;
+   }
+   h5 {
+      font-size: 0.9rem;
+   }
+
+   /* Make buttons stack vertically */
+   .button-container { /* Use class selector */
+       flex-direction: column; /* Stack buttons vertically */
+       align-items: center;
+       gap: 15px; /* Adjust vertical gap */
+   }
+   .action-button {
+       width: 80%; /* Make buttons wider */
+       max-width: 300px;
+   }
+
+   /* Adjust modal content */
+   .modal-content {
+        padding: 20px;
+        width: 90%; /* Ensure it doesn't get too wide */
+   }
+   .modal-content h3 {
+      font-size: 1.1rem;
+   }
+   .modal-content p {
+      font-size: 0.9rem;
+   }
+
+   /* Reduce padding further */
+    .question-box,
+    .flowchart-visual-box {
+       padding: 10px;
+    }
+
+    /* Adjust radio/checkbox label padding */
+    .radio-option label,
+    .checkbox-option label {
+        padding-left: 24px; /* Slightly smaller padding */
+        line-height: 18px; /* Adjust line height */
+    }
+    .radio-option label::before,
+    .checkbox-option label::before {
+        width: 16px;
+        height: 16px;
+    }
+    .radio-option input[type="radio"]:checked + label::after {
+        width: 8px;
+        height: 8px;
+        left: 5px;
+        top: 5px;
+    }
+     .checkbox-option input[type="checkbox"]:checked + label::after {
+        width: 4px;
+        height: 8px;
+        left: 7px;
+        top: 3px;
+        border-width: 0 2px 2px 0;
+    }
+}
+
+/* === RESPONSIVE STYLES END HERE === */

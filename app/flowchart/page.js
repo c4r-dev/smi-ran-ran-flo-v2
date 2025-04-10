@@ -106,10 +106,9 @@ function FlowchartContent() {
 
     // --- RENDER ---
     return (
-        // Main container div
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '1000px', margin: '80px auto 20px auto', padding: '20px' }}>
+        // Added id="flowchart-page-container"
+        <div id="flowchart-page-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '1000px', margin: '80px auto 20px auto', padding: '20px' }}>
 
-            {/* Container for the two main content boxes */}
             <div className="content-boxes-container" style={{ width: '100%', marginBottom: '30px', alignItems: 'stretch' }}>
 
                 {/* Left Column: Display Provided Answers */}
@@ -182,6 +181,7 @@ function FlowchartContent() {
                 {/* Right Column: New Questions */}
                 <div className="flowchart-visual-box" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                      <h4 style={{ marginBottom: '15px', fontWeight: 'bold', textAlign:'center', width:'100%' }}>Flowchart / Next Steps</h4>
+                     {/* Container for the new questions */}
                      <div style={{ textAlign: 'left', width: '100%', marginTop: '5px', flexGrow: 1, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '25px' }}>
 
                         {/* New Question 1 */}
@@ -234,8 +234,8 @@ function FlowchartContent() {
 
             </div>
 
-            {/* --- Button Section --- */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '20px', width: '100%', flexWrap: 'wrap' }}>
+            {/* Added className="button-container" */}
+            <div className="button-container" style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '20px', width: '100%', flexWrap: 'wrap' }}>
                 {/* Start Over Button */}
                 <button
                     onClick={() => router.back()}
@@ -254,7 +254,6 @@ function FlowchartContent() {
                     RANDOMIZATION METHOD
                 </button>
             </div>
-            {/* --- END Button Section --- */}
 
             {/* --- MODAL --- */}
             {isModalOpen && (
@@ -281,7 +280,7 @@ function FlowchartContent() {
             )}
             {/* --- END MODAL --- */}
 
-        </div> // End main container div
+        </div> // End main container div (#flowchart-page-container)
     );
 }
 
