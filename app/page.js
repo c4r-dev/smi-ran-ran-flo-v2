@@ -22,18 +22,16 @@ const initialModalContent = {
 
 export default function WelcomePage() {
     const router = useRouter();
-    // State variables - CORRECT ORDER: Covariates -> Environment -> Sample Size
-    const [currentStep, setCurrentStep] = useState(1);
+    // State variables - REMOVED currentStep
     const [covariates, setCovariates] = useState(''); // Q1
     const [environment, setEnvironment] = useState(initialEnvironmentState); // Q2
     const [sampleSize, setSampleSize] = useState(''); // Q3
-    const [questionsFinished, setQuestionsFinished] = useState(false);
+    const [questionsFinished, setQuestionsFinished] = useState(false); // Still potentially useful
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState(initialModalContent);
 
-    // Reset function
+    // Reset function - REMOVED setCurrentStep
     const handleReset = () => {
-        setCurrentStep(1);
         setCovariates('');
         setEnvironment(initialEnvironmentState);
         setSampleSize('');
@@ -42,91 +40,97 @@ export default function WelcomePage() {
         setModalContent(initialModalContent);
     }
 
-    // --- Question Logic (Covariates -> Environment -> Sample Size) ---
+    // --- Question Logic (Simplified) ---
 
-    // Q1 (Covariates): Update state only
+    // Q1 (Covariates): Update state and reset subsequent if modal was open
     const handleCovariatesChange = (event) => {
         setCovariates(event.target.value);
-        if (currentStep > 1 || isModalOpen) {
-            setCurrentStep(1);
+        // Reset subsequent steps only if modal was open, ensuring a fresh state
+        if (isModalOpen) {
             setEnvironment(initialEnvironmentState);
             setSampleSize('');
             setQuestionsFinished(false);
-            setIsModalOpen(false);
+            setIsModalOpen(false); // Close modal implicitly on new interaction
         }
     };
-    // Q1 (Covariates): Button action -> Go to Q2 (Environment)
-    const handleGoToStep2 = () => {
-        if (covariates && currentStep === 1) setCurrentStep(2);
-    }
-    // Q2 (Environment): Update state only
+    // REMOVED handleGoToStep2 function
+
+    // Q2 (Environment): Update state and reset subsequent if modal was open
     const handleEnvironmentChange = (event) => {
         const { name, checked } = event.target;
         setEnvironment(prevState => {
             const newState = { ...prevState };
             if (name === 'none') {
+                // If 'None' is checked, uncheck everything else and check 'None'
                 if (checked) {
                     for (const key in newState) newState[key] = false;
                     newState.none = true;
                 } else {
+                    // If 'None' is unchecked, just uncheck 'None'
                     newState.none = false;
                 }
             } else {
+                // If any other option is checked/unchecked
                 newState[name] = checked;
+                // If an option is checked, ensure 'None' is unchecked
                 if (checked) newState.none = false;
             }
-            if (currentStep > 2 || isModalOpen) {
-                setCurrentStep(2);
+            // Reset subsequent step only if modal was open
+            if (isModalOpen) {
                 setSampleSize('');
                 setQuestionsFinished(false);
-                setIsModalOpen(false);
+                setIsModalOpen(false); // Close modal implicitly
             }
             return newState;
         });
     };
-    // Q2 (Environment): Button action -> Go to Q3 (Sample Size)
-    const handleGoToStep3 = () => {
-        const envSelected = Object.values(environment).some(isChecked => isChecked);
-        if (envSelected && currentStep === 2 && !!covariates) setCurrentStep(3);
-    }
+    // REMOVED handleGoToStep3 function
+
     // Q3 (Sample Size): Update state only
     const handleSampleSizeChange = (event) => {
         setSampleSize(event.target.value);
+        // Reset finished/modal state if it was open
         if (questionsFinished || isModalOpen) {
             setQuestionsFinished(false);
-            setIsModalOpen(false);
+            setIsModalOpen(false); // Close modal implicitly
         }
     };
-    // Q3 (Sample Size): Button action -> Show Final Result/Modal
-    const handleFinishQuestions = () => {
-        if (isStepComplete(3) && currentStep === 3) {
-            const covariatesAnswer = covariates === 'none' ? 'None' : 'One or more';
-            const environmentAnswer = environment.none ? 'No' : (Object.values(environment).slice(1).some(v => v) ? 'Yes' : 'No');
 
-            setQuestionsFinished(true); // Mark questions as finished for potential future logic
+    // Q3 (Sample Size): Button action -> Show Final Result/Modal - REMOVED currentStep check
+    const handleFinishQuestions = () => {
+        // Only proceed if all questions are answered
+        if (isStepComplete(3)) {
+            const covariatesAnswer = covariates === 'none' ? 'None' : 'One or more';
+            // Check if any environment option *other than* 'none' is checked
+            const environmentAnswer = Object.entries(environment)
+                                          .filter(([key]) => key !== 'none')
+                                          .some(([, isChecked]) => isChecked)
+                                       ? 'Yes' : 'No';
+
+
+            setQuestionsFinished(true); // Mark questions as finished
 
             let modalBody = '';
             let modalHeading = '';
             const modalSummary = `Covariates: ${covariatesAnswer}. Env Factors: ${environmentAnswer}. Sample Size: ${sampleSize.charAt(0).toUpperCase() + sampleSize.slice(1)}`;
 
-            // Recommendation logic
-
-                if (covariates === 'one_or_more' && environmentAnswer === 'Yes') {
-                    modalHeading = 'Block & Stratified Randomization';
-                    modalBody = 'With a large sample size, strong covariates, and environmental factors, using both Block and Stratified randomization provides the most control.';
-                } else if (covariates === 'one_or_more' && environmentAnswer === 'No') {
-                    modalHeading = 'Stratified Randomization';
-                    modalBody = 'With a large sample size and strong covariates (but no significant environmental factors), Stratified randomization helps balance the covariates.';
-                } else if (environmentAnswer === 'Yes') {
-                    modalHeading = 'Block Randomization';
-                    modalBody = 'Block randomization helps maintain balanced group sizes. For studies with environmental variations to worry about such time effects or different sites, block randomization can also create balance over time and place.';
-                } else if (sampleSize === 'large') {
-                    modalHeading = 'Simple Randomization';
-                    modalBody = 'With a large sample size and no strong covariates or environmental factors to control for, simple randomization is often sufficient.';
-                } else {
-                    modalHeading = 'Block Randomization';
-                    modalBody = 'For small and moderate studies with no strong covariates and no environmental variations to worry about, block randomization helps maintain balanced group sizes.';
-                }
+            // Recommendation logic (remains the same)
+            if (covariates === 'one_or_more' && environmentAnswer === 'Yes') {
+                modalHeading = 'Block & Stratified Randomization';
+                modalBody = 'With a large sample size, strong covariates, and environmental factors, using both Block and Stratified randomization provides the most control.';
+            } else if (covariates === 'one_or_more' && environmentAnswer === 'No') {
+                modalHeading = 'Stratified Randomization';
+                modalBody = 'With a large sample size and strong covariates (but no significant environmental factors), Stratified randomization helps balance the covariates.';
+            } else if (environmentAnswer === 'Yes') {
+                modalHeading = 'Block Randomization';
+                modalBody = 'Block randomization helps maintain balanced group sizes. For studies with environmental variations to worry about such time effects or different sites, block randomization can also create balance over time and place.';
+            } else if (sampleSize === 'large') {
+                modalHeading = 'Simple Randomization';
+                modalBody = 'With a large sample size and no strong covariates or environmental factors to control for, simple randomization is often sufficient.';
+            } else { // Handles small/moderate sample size with no covariates and no env factors
+                modalHeading = 'Block Randomization';
+                modalBody = 'For small and moderate studies with no strong covariates and no environmental variations to worry about, block randomization helps maintain balanced group sizes.';
+            }
 
             setModalContent({
                 title: 'Recommended method:',
@@ -140,7 +144,8 @@ export default function WelcomePage() {
     }
     // Close Modal Action
     const closeModal = () => setIsModalOpen(false);
-    // Helper function check step completion
+
+    // Helper function check step completion (still useful for enabling final button)
     const isStepComplete = (step) => {
         if (step === 1) return !!covariates;
         if (step === 2) return !!covariates && Object.values(environment).some(isChecked => isChecked);
@@ -152,20 +157,17 @@ export default function WelcomePage() {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
             {/* <h1>Welcome to the Randomization Method Selector</h1> */}
-            {/* UPDATED TEXT in the paragraph below */}
             <br />
             <p style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'center' }}>
                 This interactive flowchart guides researchers through selecting an appropriate randomization method for their study design. Users answer questions about their study characteristics to receive a recommended randomization approach with relevant considerations and implementation guidance.
             </p>
 
             {/* --- Container for Questions --- */}
-            {/* Updated class from question-status-grid */}
             <div className="question-grid">
 
                 {/* --- Question 1 --- */}
                 <div className="content-box question-box-override">
                     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                        {/* MODIFIED TEXT BELOW */}
                         <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>1. Known important covariates / prognostic factors?</h4>
                         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px 20px', width: 'fit-content', maxWidth: '300px', marginBottom: '15px' }}>
                             <div className="radio-option" style={{ padding: '5px' }}>
@@ -176,7 +178,7 @@ export default function WelcomePage() {
                                     value="none"
                                     checked={covariates === 'none'}
                                     onChange={handleCovariatesChange}
-                                    disabled={currentStep > 1 || isModalOpen}
+                                    disabled={isModalOpen} // REMOVED currentStep check
                                 />
                                 <label
                                     htmlFor="cov_none"
@@ -193,7 +195,7 @@ export default function WelcomePage() {
                                     value="one_or_more"
                                     checked={covariates === 'one_or_more'}
                                     onChange={handleCovariatesChange}
-                                    disabled={currentStep > 1 || isModalOpen}
+                                    disabled={isModalOpen} // REMOVED currentStep check
                                 />
                                 <label
                                     htmlFor="cov_one_or_more"
@@ -203,14 +205,14 @@ export default function WelcomePage() {
                                 </label>
                             </div>
                         </div>
-                        {currentStep === 1 && !isModalOpen && (<button onClick={handleGoToStep2} className="action-button" disabled={!isStepComplete(1)} style={{ opacity: !isStepComplete(1) ? 0.6 : 1, width: 'auto', padding: '8px 16px', fontSize: '14px', marginTop: 'auto' }}>Next Question</button>)}
+                        {/* REMOVED Next Question Button */}
                     </div>
                 </div>
 
                 {/* --- Question 2 --- */}
-                <div className="content-box question-box-override" style={{ visibility: currentStep >= 2 ? 'visible' : 'hidden' }}>
+                {/* REMOVED visibility style */}
+                <div className="content-box question-box-override">
                     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                        {/* MODIFIED TEXT BELOW */}
                         <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>2. Potential sources of environmental variation?</h4>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', width: '100%', maxWidth: '450px', marginBottom: '15px' }}>
                             {/* Column 1 */}
@@ -223,7 +225,7 @@ export default function WelcomePage() {
                                             name={key}
                                             checked={environment[key]}
                                             onChange={handleEnvironmentChange}
-                                            disabled={currentStep > 2 || isModalOpen}
+                                            disabled={isModalOpen} // REMOVED currentStep check
                                         />
                                         <label htmlFor={`env_${key}`}>
                                             {{ none: 'None', time: 'Time', batches: 'Batches', gradients: 'Gradients', handling: 'Handling' }[key] || key}
@@ -241,7 +243,7 @@ export default function WelcomePage() {
                                             name={key}
                                             checked={environment[key]}
                                             onChange={handleEnvironmentChange}
-                                            disabled={currentStep > 2 || isModalOpen}
+                                            disabled={isModalOpen} // REMOVED currentStep check
                                         />
                                         <label htmlFor={`env_${key}`}>
                                             {{ testing: 'Testing Order', personnel: 'Personnel', edge: 'Edge Effects', sites: 'Sites' }[key] || key}
@@ -250,14 +252,14 @@ export default function WelcomePage() {
                                 ))}
                             </div>
                         </div>
-                        {currentStep === 2 && !isModalOpen && (<button onClick={handleGoToStep3} className="action-button" disabled={!isStepComplete(2)} style={{ opacity: !isStepComplete(2) ? 0.6 : 1, width: 'auto', padding: '8px 16px', fontSize: '14px', marginTop: 'auto' }}>Next Question</button>)}
+                        {/* REMOVED Next Question Button */}
                     </div>
                 </div>
 
                 {/* --- Question 3 --- */}
-                <div className="content-box question-box-override" style={{ visibility: currentStep >= 3 ? 'visible' : 'hidden' }}>
+                 {/* REMOVED visibility style */}
+                <div className="content-box question-box-override">
                     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                        {/* MODIFIED TEXT BELOW */}
                         <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>3. Sample size?</h4>
                         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px 20px', width: 'fit-content', maxWidth: '350px', marginBottom: '15px' }}>
                             <div className="radio-option" style={{ padding: '5px' }}>
@@ -273,18 +275,19 @@ export default function WelcomePage() {
                                 <label htmlFor="large" style={{ fontWeight: sampleSize === 'large' ? 'bold' : 'normal' }}>Large</label>
                             </div>
                         </div>
-                        {/* Button moved outside the inner div to align with others if needed, or keep inside if only shown conditionally */}
                     </div>
                 </div>
 
             </div> {/* End question grid container */}
 
             {/* --- Button and Modal --- */}
-            {currentStep === 3 && !isModalOpen && (
+             {/* REMOVED currentStep check from condition */}
+            {!isModalOpen && (
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                     <button onClick={handleFinishQuestions} className="action-button" disabled={!isStepComplete(3)} style={{ opacity: !isStepComplete(3) ? 0.6 : 1, width: 'auto', padding: '10px 24px' }}> Show Recommendation </button>
                 </div>
             )}
+            {/* Modal remains the same */}
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
