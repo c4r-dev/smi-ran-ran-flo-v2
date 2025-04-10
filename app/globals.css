@@ -1,6 +1,199 @@
 /* globals.css */
 
-/* === NEW STYLES START HERE === */ /* (Section marker kept for reference) */
+/* === NEW STYLES START HERE === */
+
+/* Grid container for questions and status boxes in app/page.js */
+.question-status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 20px; /* Space between columns and rows */
+  width: 100%;
+  margin-bottom: 20px; /* Space below the grid */
+}
+
+/* Base style for all boxes in the app/page.js grid */
+.content-box {
+  padding: 15px 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  display: flex; /* Use flex for content alignment *within* the box */
+  flex-direction: column;
+  align-items: center; /* Center content horizontally by default */
+  width: 100%; /* Fill grid cell width */
+  box-sizing: border-box; /* Include padding/border in element's total width/height */
+}
+
+/* Override for question boxes (left column in app/page.js grid) */
+.question-box-override {
+  justify-content: flex-start; /* Align content (h4, options) to top */
+  text-align: left;
+}
+
+/* Override for status boxes (right column in app/page.js grid) */
+.status-box-override {
+  justify-content: center; /* Center content vertically */
+  text-align: center; /* Center text */
+}
+
+
+/* === Custom Radio Button Styles === */
+
+.radio-option {
+  display: flex; /* Align custom radio and label */
+  align-items: center;
+  cursor: pointer; /* Indicate clickable area */
+  min-height: 24px; /* Ensure consistent height */
+}
+
+/* Hide the actual radio button */
+.radio-option input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+/* Style the label to provide space and alignment */
+.radio-option label {
+  display: inline-block;
+  padding-left: 28px; /* Make space for the custom radio */
+  position: relative;
+  line-height: 20px; /* Vertically align text */
+  cursor: pointer;
+}
+
+/* Create the custom radio button appearance (the circle) */
+.radio-option label::before {
+  content: "";
+  display: inline-block;
+  width: 18px; /* Size of the outer circle */
+  height: 18px;
+  border: 2px solid #6F00FF; /* Use your action color or another */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  left: 0;
+  top: 0px; /* Adjust top position to align with text */
+  background-color: #fff; /* Background of the circle */
+  transition: all 0.2s ease; /* Smooth transition */
+}
+
+/* Style the inner dot for the checked state */
+.radio-option input[type="radio"]:checked + label::after {
+  content: "";
+  display: inline-block;
+  width: 10px; /* Size of the inner dot */
+  height: 10px;
+  background-color: #6F00FF; /* Use your action color */
+  border-radius: 50%;
+  position: absolute;
+  left: 6px; /* Position inner dot inside the circle */
+  top: 6px; /* Position inner dot inside the circle */
+  transition: all 0.2s ease;
+}
+
+/* Optional: Style on hover */
+.radio-option:hover label::before {
+  border-color: #5700CA; /* Darker shade on hover */
+}
+
+/* Style for disabled state */
+.radio-option input[type="radio"]:disabled + label {
+  cursor: not-allowed;
+  color: #999; /* Grey out text */
+  /* Keep the fontWeight bold if it was set in inline style */
+}
+
+.radio-option input[type="radio"]:disabled + label::before {
+  border-color: #ccc; /* Grey out border */
+  background-color: #f0f0f0; /* Slightly grey background */
+}
+
+/* Style for inner dot when disabled but checked */
+.radio-option input[type="radio"]:disabled:checked + label::after {
+  background-color: #999; /* Grey out inner dot */
+}
+
+
+/* === Custom Checkbox Styles === */
+
+.checkbox-option {
+  display: flex; /* Align custom checkbox and label */
+  align-items: center;
+  cursor: pointer; /* Indicate clickable area */
+  min-height: 24px; /* Ensure consistent height */
+}
+
+/* Hide the actual checkbox */
+.checkbox-option input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+/* Style the label for checkboxes */
+.checkbox-option label {
+  display: inline-block;
+  padding-left: 28px; /* Make space for the custom checkbox */
+  position: relative;
+  line-height: 20px; /* Vertically align text */
+  cursor: pointer;
+}
+
+/* Create the custom checkbox appearance (the square box) */
+.checkbox-option label::before {
+  content: "";
+  display: inline-block;
+  width: 18px; /* Size of the box */
+  height: 18px;
+  border: 2px solid #6F00FF; /* Use your action color or another */
+  border-radius: 3px; /* Slightly rounded corners for checkbox */
+  position: absolute;
+  left: 0;
+  top: 0px; /* Adjust top position */
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+/* Style the checkmark for the checked state */
+.checkbox-option input[type="checkbox"]:checked + label::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid #6F00FF; /* Checkmark color */
+  border-width: 0 3px 3px 0;
+  position: absolute;
+  left: 8px; /* Position checkmark inside the box */
+  top: 3px;  /* Position checkmark inside the box */
+  transform: rotate(45deg);
+  transition: all 0.2s ease;
+}
+
+/* Optional: Style on hover */
+.checkbox-option:hover label::before {
+  border-color: #5700CA; /* Darker shade on hover */
+}
+
+/* Style for disabled state */
+.checkbox-option input[type="checkbox"]:disabled + label {
+  cursor: not-allowed;
+  color: #999; /* Grey out text */
+}
+
+.checkbox-option input[type="checkbox"]:disabled + label::before {
+  border-color: #ccc;
+  background-color: #f0f0f0;
+}
+
+/* Style for checkmark when disabled but checked */
+.checkbox-option input[type="checkbox"]:disabled:checked + label::after {
+  border-color: #999; /* Grey out checkmark */
+}
+
+
+/* === Styles specifically for app/flowchart/page.js === */
+/* (These were present in the original file and apply to the flowchart page) */
 
 .content-boxes-container {
   display: flex; /* Enable Flexbox */
@@ -40,7 +233,7 @@
 }
 
 
-/* Adjust Result container styles */
+/* Adjust Result container styles (Used in both pages, ensure consistency) */
 .result-container {
   border: 1px solid #d1d5db;
   border-radius: 0.25rem;
@@ -50,7 +243,7 @@
   background-color: #f0f0f0;
 }
 
-/* Ensure reset button is centered below results */
+/* Ensure reset button is centered below results (Used in both pages) */
 .reset-button {
   display: block;
   margin: 20px auto 0;
@@ -72,9 +265,9 @@
   background-color: #5700CA !important;
 }
 
-/* === NEW STYLES END HERE === */
+/* === NEW STYLES END HERE (Except for general styles below) === */
 
-/* --- Existing styles below (with modifications) --- */
+/* --- Existing styles below (with modifications/integration) --- */
 @font-face {
   font-family: 'General Sans';
   src: url('/fonts/GeneralSans/GeneralSans-Regular.woff2') format('woff2'),
@@ -100,13 +293,13 @@
 
 * {
   text-wrap: balance;
+  box-sizing: border-box; /* Apply box-sizing globally */
 }
 
 body {
   font-family: 'General Sans', Courier, sans-serif;
   margin: 0;
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 20px; /* Added padding back */
   color: #333;
   min-height: 100vh;
   display: flex;
@@ -164,7 +357,7 @@ h2 {
   font-size: 1.2rem;
   font-weight: bold;
   text-align: center;
-  margin-top: 80px;
+  margin-top: 80px; /* Adjusted for fixed header */
   padding: 0 10%;
 }
 
@@ -174,7 +367,7 @@ h2 {
   max-width: 1200px; /* Keep increased width */
   width: 100%;
   /* Using centered margin */
-  margin: 80px auto 20px;
+  margin: 80px auto 20px; /* Adjusted top margin for fixed header */
   box-sizing: border-box;
 }
 
@@ -191,7 +384,7 @@ h2 {
   margin-bottom: 0.75rem;
 }
 
-/* Button Styling */
+/* Button Styling (General) */
 .action-button {
   display: inline-flex;
   justify-content: center;
@@ -207,13 +400,27 @@ h2 {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.2s ease; /* Added transition */
 }
 
 .action-button:hover {
   background-color: #5700CA !important;
 }
 
-/* Styles for Result display */
+/* Added disabled styles for buttons */
+.action-button:disabled {
+  background-color: #cccccc; /* Grey background */
+  color: #666666; /* Darker grey text */
+  cursor: not-allowed; /* Indicate non-interactive */
+  opacity: 0.7; /* Make it slightly transparent */
+}
+/* Prevent hover effect on disabled */
+.action-button:disabled:hover {
+  background-color: #cccccc !important;
+}
+
+
+/* Styles for Result display (General) */
 .result-heading {
   font-size: 1.125rem;
   font-weight: 500;
@@ -231,6 +438,7 @@ h2 {
 }
 
 /* === SVG Flowchart Styles === */
+/* (These apply only to the flowchart component) */
 
 .flowchart-svg {
   max-width: 100%;
@@ -331,6 +539,45 @@ h2 {
 #arrowhead polygon {
     fill: #999;
 }
-
-
 /* === End SVG Flowchart Styles === */
+
+/* === MODAL STYLES START HERE === */
+/* (General styles for the modal used in app/page.js) */
+.modal-overlay {
+  position: fixed; /* Sit on top of the page content */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Black background with opacity */
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1000; /* Sit on top */
+  padding: 20px; /* Add padding for smaller screens */
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px; /* Max width of modal */
+  width: 90%; /* Width relative to viewport */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative; /* For potential absolute positioning inside */
+  /* Add animation later if desired */
+}
+
+/* Optional: Style for close button if you add one inside modal-content absolutely */
+/* .modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+} */
+/* === MODAL STYLES END HERE === */
