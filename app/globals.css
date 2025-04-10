@@ -2,13 +2,15 @@
 
 /* === NEW STYLES START HERE === */
 
-/* Grid container for questions and status boxes in app/page.js */
-.question-status-grid {
+/* Updated Grid container for questions in app/page.js */
+/* Renamed from .question-status-grid and changed columns */
+.question-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  gap: 20px; /* Space between columns and rows */
+  grid-template-columns: 1fr; /* Single column for questions */
+  gap: 20px; /* Space between rows */
   width: 100%;
-  margin-bottom: 20px; /* Space below the grid */
+  max-width: 600px; /* Optional: Constrain max width */
+  margin: 0 auto 20px auto; /* Center the grid and add bottom margin */
 }
 
 /* Base style for all boxes in the app/page.js grid */
@@ -23,17 +25,13 @@
   box-sizing: border-box; /* Include padding/border in element's total width/height */
 }
 
-/* Override for question boxes (left column in app/page.js grid) */
+/* Override for question boxes (now the only boxes in the grid) */
 .question-box-override {
   justify-content: flex-start; /* Align content (h4, options) to top */
   text-align: left;
 }
 
-/* Override for status boxes (right column in app/page.js grid) */
-.status-box-override {
-  justify-content: center; /* Center content vertically */
-  text-align: center; /* Center text */
-}
+/* Removed .status-box-override rule as it's no longer used */
 
 
 /* === Custom Radio Button Styles === */

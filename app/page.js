@@ -110,7 +110,7 @@ export default function WelcomePage() {
             const modalSummary = `Covariates: ${covariatesAnswer}. Env Factors: ${environmentAnswer}. Sample Size: ${sampleSize.charAt(0).toUpperCase() + sampleSize.slice(1)}`;
 
             // Recommendation logic
-             
+
                 if (covariates === 'one_or_more' && environmentAnswer === 'Yes') {
                     modalHeading = 'Block & Stratified Randomization';
                     modalBody = 'With a large sample size, strong covariates, and environmental factors, using both Block and Stratified randomization provides the most control.';
@@ -123,7 +123,7 @@ export default function WelcomePage() {
                 } else if (sampleSize === 'large') {
                     modalHeading = 'Simple Randomization';
                     modalBody = 'With a large sample size and no strong covariates or environmental factors to control for, simple randomization is often sufficient.';
-                } else { 
+                } else {
                     modalHeading = 'Block Randomization';
                     modalBody = 'For small and moderate studies with no strong covariates and no environmental variations to worry about, block randomization helps maintain balanced group sizes.';
                 }
@@ -147,32 +147,6 @@ export default function WelcomePage() {
         if (step === 3) return !!covariates && Object.values(environment).some(isChecked => isChecked) && !!sampleSize;
         return false;
     };
-    // Status Box content logic
-    const getRightBox1Content = () => {
-        if (covariates === 'none') return "No Covariates → Environment?";
-        if (covariates === 'one_or_more') return "Covariates → Environment?";
-        return "";
-    };
-    const getRightBox2Content = () => {
-        if (currentStep >= 2 && isStepComplete(1)) {
-            const envSelected = Object.values(environment).some(v => v);
-            if (envSelected) {
-                const environmentAnswer = environment.none ? 'No Env Factors' : 'Env Factors';
-                return `${environmentAnswer} → Sample Size?`;
-            } else if (currentStep === 2) { return "Select Env Factor(s) → Sample Size?"; }
-        }
-        return "";
-    };
-    const getRightBox3Content = () => {
-        if (currentStep >= 3 && isStepComplete(2)) {
-            if (sampleSize) {
-                if (sampleSize === 'small' || sampleSize === 'moderate') return `${sampleSize.charAt(0).toUpperCase() + sampleSize.slice(1)} Sample → Block`;
-                if (sampleSize === 'large') return "Large Sample → Final Rec.";
-            } else if (currentStep === 3) { return "Select Sample Size → Final Rec."; }
-        }
-        return "";
-    };
-
 
     // --- RENDER ---
     return (
@@ -184,13 +158,15 @@ export default function WelcomePage() {
                 This interactive flowchart guides researchers through selecting an appropriate randomization method for their study design. Users answer questions about their study characteristics to receive a recommended randomization approach with relevant considerations and implementation guidance.
             </p>
 
-            {/* --- Grid Layout Container --- */}
-            <div className="question-status-grid">
+            {/* --- Container for Questions --- */}
+            {/* Updated class from question-status-grid */}
+            <div className="question-grid">
 
-                {/* --- Row 1: Question 1 & Status 1 --- */}
+                {/* --- Question 1 --- */}
                 <div className="content-box question-box-override">
                     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                        <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>1. Known important covariates?</h4>
+                        {/* MODIFIED TEXT BELOW */}
+                        <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>1. Known important covariates / prognostic factors?</h4>
                         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px 20px', width: 'fit-content', maxWidth: '300px', marginBottom: '15px' }}>
                             <div className="radio-option" style={{ padding: '5px' }}>
                                 <input
@@ -230,14 +206,12 @@ export default function WelcomePage() {
                         {currentStep === 1 && !isModalOpen && (<button onClick={handleGoToStep2} className="action-button" disabled={!isStepComplete(1)} style={{ opacity: !isStepComplete(1) ? 0.6 : 1, width: 'auto', padding: '8px 16px', fontSize: '14px', marginTop: 'auto' }}>Next Question</button>)}
                     </div>
                 </div>
-                <div className="content-box status-box-override">
-                    {getRightBox1Content()}
-                </div>
 
-                {/* --- Row 2: Question 2 & Status 2 --- */}
+                {/* --- Question 2 --- */}
                 <div className="content-box question-box-override" style={{ visibility: currentStep >= 2 ? 'visible' : 'hidden' }}>
                     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                        <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>2. Environmental variation sources?</h4>
+                        {/* MODIFIED TEXT BELOW */}
+                        <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>2. Potential sources of environmental variation?</h4>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', width: '100%', maxWidth: '450px', marginBottom: '15px' }}>
                             {/* Column 1 */}
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '10px' }}>
@@ -279,14 +253,12 @@ export default function WelcomePage() {
                         {currentStep === 2 && !isModalOpen && (<button onClick={handleGoToStep3} className="action-button" disabled={!isStepComplete(2)} style={{ opacity: !isStepComplete(2) ? 0.6 : 1, width: 'auto', padding: '8px 16px', fontSize: '14px', marginTop: 'auto' }}>Next Question</button>)}
                     </div>
                 </div>
-                <div className="content-box status-box-override" style={{ visibility: currentStep >= 2 ? 'visible' : 'hidden' }}>
-                    {getRightBox2Content()}
-                </div>
 
-                {/* --- Row 3: Question 3 & Status 3 --- */}
+                {/* --- Question 3 --- */}
                 <div className="content-box question-box-override" style={{ visibility: currentStep >= 3 ? 'visible' : 'hidden' }}>
                     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                        <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>3. What is your sample size?</h4>
+                        {/* MODIFIED TEXT BELOW */}
+                        <h4 style={{ marginBottom: '8px', fontWeight: 'bold', width: '100%', textAlign: 'center' }}>3. Sample size?</h4>
                         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px 20px', width: 'fit-content', maxWidth: '350px', marginBottom: '15px' }}>
                             <div className="radio-option" style={{ padding: '5px' }}>
                                 <input type="radio" id="small" name="sampleSize" value="small" checked={sampleSize === 'small'} onChange={handleSampleSizeChange} disabled={isModalOpen} />
@@ -301,13 +273,11 @@ export default function WelcomePage() {
                                 <label htmlFor="large" style={{ fontWeight: sampleSize === 'large' ? 'bold' : 'normal' }}>Large</label>
                             </div>
                         </div>
+                        {/* Button moved outside the inner div to align with others if needed, or keep inside if only shown conditionally */}
                     </div>
                 </div>
-                <div className="content-box status-box-override" style={{ visibility: currentStep >= 3 ? 'visible' : 'hidden' }}>
-                    {getRightBox3Content()}
-                </div>
 
-            </div> {/* End grid container */}
+            </div> {/* End question grid container */}
 
             {/* --- Button and Modal --- */}
             {currentStep === 3 && !isModalOpen && (
