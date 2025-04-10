@@ -189,7 +189,6 @@
   border-color: #999; /* Grey out checkmark */
 }
 
-
 /* === Styles specifically for app/flowchart/page.js === */
 /* (These were present in the original file and apply to the flowchart page) */
 
@@ -208,7 +207,7 @@
   border: 1px solid #eee;
   border-radius: 8px;
   background-color: #fff;
-  min-height: 200px;
+  min-height: 200px; /* Adjusted minimum height */
   display: flex;
   flex-direction: column;
 }
@@ -222,11 +221,12 @@
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  /* Align items (SVG) to start (left) */
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
+  /* Align items (placeholder text/SVG) */
+  align-items: center; /* Center horizontally */
+  justify-content: flex-start; /* Align content to top */
+  text-align: center; /* Center text */
   width: 100%;
+  min-height: 200px; /* Match question box */
   overflow: auto;
 }
 
@@ -579,3 +579,40 @@ h2 {
   cursor: pointer;
 } */
 /* === MODAL STYLES END HERE === */
+
+
+/* === RULES TO MAKE SELECTED DISABLED OPTIONS DARKER (in flowchart page) === */
+
+/* Override default disabled text color for SELECTED options -> Use Black */
+.selected-disabled-option label {
+  color: #000 !important; /* Use black for max contrast */
+  cursor: default !important;
+}
+
+/* --- Radio Button Overrides for SELECTED (Darker) --- */
+
+/* Override disabled border color for the outer circle of SELECTED radio -> Use Black */
+.selected-disabled-option input[type="radio"]:disabled + label::before {
+  border-color: #000 !important; /* Use black */
+  background-color: #fff; /* Keep background white */
+}
+
+/* Override disabled inner dot color for SELECTED radio -> Use Black */
+.selected-disabled-option input[type="radio"]:disabled:checked + label::after {
+  background-color: #000 !important; /* Use black */
+}
+
+/* --- Checkbox Overrides for SELECTED (Darker) --- */
+
+/* Override disabled border color for the box of SELECTED checkbox -> Use Black */
+.selected-disabled-option input[type="checkbox"]:disabled + label::before {
+  border-color: #000 !important; /* Use black */
+  background-color: #fff; /* Keep background white */
+}
+
+/* Override disabled checkmark color for SELECTED checkbox -> Use Black */
+.selected-disabled-option input[type="checkbox"]:disabled:checked + label::after {
+  border-color: #000 !important; /* Use black */
+}
+
+/* === End of Darker Selected Disabled Options Rules === */

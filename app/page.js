@@ -221,15 +221,24 @@ export default function WelcomePage() {
 
             </div> {/* End question grid container */}
 
-            {/* --- MODIFIED Button --- */}
+            {/* --- Buttons Section (Swapped Order) --- */}
              {/* REMOVED !isModalOpen check */}
              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                {/* Changed text and onClick handler */}
-                <button onClick={handleContinue} className="action-button" disabled={!isStepComplete(3)} style={{ opacity: !isStepComplete(3) ? 0.6 : 1, width: 'auto', padding: '10px 24px' }}>
-                    CONTINUE
+                 {/* Start Over button is now first */}
+                <button
+                    onClick={handleReset}
+                    className="action-button"
+                    style={{ background: '#6c757d', marginRight: '15px', width: 'auto', padding: '10px 24px' }}>
+                        Start Over
                 </button>
-                {/* Optional: Add Start Over button here if needed */}
-                <button onClick={handleReset} className="action-button" style={{ background: '#6c757d', marginLeft: '15px', width: 'auto', padding: '10px 24px' }}>Start Over</button>
+                {/* Continue button is now second */}
+                <button
+                    onClick={handleContinue}
+                    className="action-button"
+                    disabled={!isStepComplete(3)}
+                    style={{ opacity: !isStepComplete(3) ? 0.6 : 1, width: 'auto', padding: '10px 24px' }}>
+                        CONTINUE
+                </button>
             </div>
 
             {/* REMOVED Modal */}
