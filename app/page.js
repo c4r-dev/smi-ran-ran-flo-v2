@@ -103,9 +103,9 @@ export default function WelcomePage() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
             {/* ... Intro text ... */}
              <br />
-            <p style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'center' }}>
+            {/* <p style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'center' }}>
                 This interactive flowchart guides researchers through selecting an appropriate randomization method for their study design. Users answer questions about their study characteristics to receive a recommended randomization approach with relevant considerations and implementation guidance.
-            </p>
+            </p> */}
 
             {/* --- Container for Questions --- */}
             <div className="question-grid">
