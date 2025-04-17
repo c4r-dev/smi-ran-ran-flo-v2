@@ -76,12 +76,12 @@ function FlowchartContent() {
             methodDetails = 'When important covariates need to be controlled, stratified randomization helps balance selected covariates across treatment groups.';
         } else if (strongCovariates === 'no' && envBias === 'yes') {
             methodName = 'Block Randomization';
-            methodDetails = 'Block Randomization helps maintain balanced group sizes. With environmental variations to worry about such time effects or different sites, block randomization can also create balance over time and place.';
+            methodDetails = 'For studies with environmental variations to worry about such time effects or different sites, block randomization can also create balance over time and place.';
         } else if (strongCovariates === 'no' && envBias === 'no') {
             if (flowchartSampleSize === 'small_moderate') {
                 methodName = 'Block Randomization';
                 // Using the same details as the Block case above, as specified
-                methodDetails = 'Block Randomization helps maintain balanced group sizes. With environmental variations to worry about such time effects or different sites, block randomization can also create balance over time and place.';
+                methodDetails = 'For studies with environmental variations to worry about such time effects or different sites, block randomization can also create balance over time and place.';
             } else if (flowchartSampleSize === 'large') {
                 methodName = 'Simple randomization';
                 methodDetails = 'With a large sample size, simple randomization can produce sufficiently balanced groups. If you do not need to consider environmental sources of bias or strong covariates, simple is easy to implement and interpret.';
