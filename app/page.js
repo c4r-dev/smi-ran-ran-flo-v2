@@ -146,7 +146,7 @@ export default function WelcomePage() {
                                     htmlFor="cov_one_or_more"
                                     style={{ fontWeight: covariates === 'one_or_more' ? 'bold' : 'normal' }}
                                 >
-                                    One or more
+                                    One or more (sex, age, weight, litter, strain, disease severity, etc.)
                                 </label>
                             </div>
                         </div>
@@ -171,7 +171,7 @@ export default function WelcomePage() {
                                             // disabled={isModalOpen} // REMOVED
                                         />
                                         <label htmlFor={`env_${key}`}>
-                                            {{ none: 'None', time: 'Time', batches: 'Batches', gradients: 'Gradients', handling: 'Handling' }[key] || key}
+                                            {{ none: 'None', time: 'Time-effects (day/night, seasonal)', batches: 'Enrollment in batches or cohorts', gradients: 'Environmental gradients (temperature, light, position of tank/cage)', handling: 'Handling / selection order' }[key] || key}
                                         </label>
                                     </div>
                                 ))}
@@ -189,7 +189,7 @@ export default function WelcomePage() {
                                              // disabled={isModalOpen} // REMOVED
                                         />
                                         <label htmlFor={`env_${key}`}>
-                                            {{ testing: 'Testing Order', personnel: 'Personnel', edge: 'Edge Effects', sites: 'Sites' }[key] || key}
+                                            {{ testing: 'Testing Order', personnel: 'Personnel effects', edge: 'Edge Effects (plates, cages)', sites: 'Multi-sites' }[key] || key}
                                         </label>
                                     </div>
                                 ))}
