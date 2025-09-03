@@ -658,6 +658,16 @@ h2 {
         width: 100%; /* Ensure it can center */
    }
 
+   /* Improve environment checkboxes layout on mobile */
+   .question-box .checkbox-option {
+       margin-bottom: 8px;
+   }
+
+   /* Ensure Study Characteristics questions remain left-aligned */
+   .question-box h5 {
+       text-align: left;
+   }
+
    /* Adjust main page container and flowchart page container padding/width */
    #flowchart-page-container, /* Use ID selector */
    #main-page-container /* Add this if you added the ID to app/page.js */
@@ -722,6 +732,19 @@ h2 {
     .question-box,
     .flowchart-visual-box {
        padding: 10px;
+    }
+
+    /* Better spacing for environment checkboxes on mobile */
+    .question-box div[style*="justifyContent: 'space-between'"] {
+        flex-direction: column !important;
+        gap: 15px !important;
+        align-items: flex-start !important;
+    }
+
+    /* Improve main container margins on small screens */
+    div[style*="margin: '80px auto 20px auto'"] {
+        margin: 60px auto 10px auto !important;
+        padding: 10px !important;
     }
 
     /* Adjust radio/checkbox label padding */
